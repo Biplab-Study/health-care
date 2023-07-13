@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: biplab-health-care
+  labels:
+    app: biplab-healthcare-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: biplab-healthcare-app
+  template:
+    metadata:
+      labels:
+        app: biplab-healthcare-app
+    spec:
+      containers:
+      - name: biplab-healthcare-container
+        image: biplabstudy/biplab-healthcare-app
+        ports:
+        - containerPort: 8084
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: biplab-healthcare-app
+  labels:
+    app: biplab-healthcare-app
+spec:
+  selector:
+    app: biplab-healthcare-app
+
+  type: NodePort
+  ports:
+  - nodePort: 30101
+    port: 81
+    targetPort: 8084
